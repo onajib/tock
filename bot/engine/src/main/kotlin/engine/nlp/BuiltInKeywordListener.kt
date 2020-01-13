@@ -54,7 +54,7 @@ object BuiltInKeywordListener : NlpListener {
         return if (keywords.contains(sentence) || keywordRegexp?.matches(sentence) == true) {
             Intent.keyword
         } else {
-            null
+            keywordServices.asSequence().mapNotNull { it.detectKeywordIntent(sentence) }.firstOrNull()
         }
     }
 

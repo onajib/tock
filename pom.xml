@@ -94,6 +94,7 @@
     </properties>
 
     <modules>
+        <module>xray</module>
         <module>shared</module>
         <module>stt</module>
         <module>translator</module>
@@ -238,6 +239,11 @@
             <dependency>
                 <groupId>ai.tock</groupId>
                 <artifactId>bot-test-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.tock</groupId>
+                <artifactId>tock-xray</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
