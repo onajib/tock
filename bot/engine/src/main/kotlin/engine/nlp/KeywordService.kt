@@ -20,17 +20,19 @@ import ai.tock.bot.definition.Intent
 import ai.tock.bot.engine.BotBus
 import ai.tock.shared.Loader
 
-@Volatile
-private var internalKeywordServices: List<KeywordService>? = null
+//@Volatile
+//private var internalKeywordServices: List<KeywordService>? = null
 
-internal val keywordServices: List<KeywordService>
-    get() =
-        if (internalKeywordServices == null) {
-            internalKeywordServices = Loader.loadServices()
-            internalKeywordServices!!
-        } else {
-            internalKeywordServices!!
-        }
+//internal val keywordServices: List<KeywordService>
+//    get() =
+//        if (internalKeywordServices == null) {
+//            internalKeywordServices = Loader.loadServices()
+//            internalKeywordServices!!
+//        } else {
+//            internalKeywordServices!!
+//        }
+
+internal val keywordServices: List<KeywordService> = Loader.loadServices()
 
 interface KeywordService {
 

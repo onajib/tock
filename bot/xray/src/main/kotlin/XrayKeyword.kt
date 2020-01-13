@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package ai.tock.bot.xray.keyword
+package ai.tock.bot.xray
 
-import ai.tock.bot.engine.nlp.BuiltInKeywordListener
+import ai.tock.bot.definition.Intent
+import ai.tock.bot.engine.BotBus
 import ai.tock.bot.engine.nlp.KeywordService
 import ai.tock.shared.property
-import java.util.concurrent.ConcurrentSkipListSet
 
 class XrayKeyword : KeywordService {
     val XRAY_KEYWORD = property("tock_bot_xray_creation_keyword", "_xray_")
     val XRAY_UPDATE_KEYWORD = property("tock_bot_xray_update_keyword", "_xray_update_")
 
-    init {
-        BuiltInKeywordListener.keywords.addAll(ConcurrentSkipListSet<String>(
-                listOf(XRAY_KEYWORD, XRAY_UPDATE_KEYWORD)))
-        BuiltInKeywordListener.keywordRegexp = "^($XRAY_KEYWORD|$XRAY_UPDATE_KEYWORD).*\$".toRegex()
+    override fun detectKeywordIntent(sentence: String): Intent? {
+        return if(sentence.startsWith(XRAY_KEYWORD) || sentence.startsWith(XRAY_UPDATE_KEYWORD)) {
+            Intent.keyword
+        } else {
+            null
+        }
     }
+
+    override fun keywordHandler(keyword: String): ((bus: BotBus) -> Unit)? = null
 }

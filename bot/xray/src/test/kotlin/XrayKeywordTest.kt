@@ -23,15 +23,18 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 
-class XrayTests {
+class XrayKeywordTest {
 
     @Test
-    fun test() {
-        assertTrue(true)
+    fun `GIVEN a keyword WHEN this keywords do not belong to keywords list THEN keyword is not recognized and return an error`() {
+        val keyword = "_toto_"
+
+        val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
+        assertTrue(resultingIntent == null)
     }
 
     @Test
-    fun `GIVEN a keyword WHEN this keywords equals test THEN keyword is recognized and the Intent keyword is returned`() {
+    fun `GIVEN a keyword WHEN this keywords equals -test- THEN keyword is recognized and the Intent keyword is returned`() {
         val keyword = "_test_"
 
         val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
@@ -39,17 +42,38 @@ class XrayTests {
             resultingIntent is Intent
             resultingIntent?.name == "$TOCK_NAMESPACE:keyword"
         }
-
     }
+
     @Test
-    fun `GIVEN a keyword WHEN this keywords do not belong to keywords list THEN keyword is not recognized and return an error`() {
-        val keyword = "_toto_"
+    fun `GIVEN a keyword WHEN this keywords equals -end test- THEN keyword is recognized and the Intent keyword is returned`() {
+        val keyword = "_end_test_"
 
         val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
         assertTrue {
             resultingIntent is Intent
             resultingIntent?.name == "$TOCK_NAMESPACE:keyword"
         }
+    }
 
+    @Test
+    fun `GIVEN a keyword WHEN this keywords equals -xray- THEN keyword is recognized and the Intent keyword is returned`() {
+        val keyword = "_xray_"
+
+        val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
+        assertTrue {
+            resultingIntent is Intent
+            resultingIntent?.name == "$TOCK_NAMESPACE:keyword"
+        }
+    }
+
+    @Test
+    fun `GIVEN a keyword WHEN this keywords equals -xray update- THEN keyword is recognized and the Intent keyword is returned`() {
+        val keyword = "_xray_update_"
+
+        val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
+        assertTrue {
+            resultingIntent is Intent
+            resultingIntent?.name == "$TOCK_NAMESPACE:keyword"
+        }
     }
 }
