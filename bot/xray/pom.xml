@@ -24,8 +24,7 @@
         <version>19.9.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xray</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>tock-xray-plugin</artifactId>
     <name>Tock Xray</name>
     <description>...</description>
 
@@ -33,10 +32,6 @@
         <dependency>
             <groupId>ai.tock</groupId>
             <artifactId>tock-bot-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.tock</groupId>
-            <artifactId>tock-shared</artifactId>
         </dependency>
 
         <dependency>

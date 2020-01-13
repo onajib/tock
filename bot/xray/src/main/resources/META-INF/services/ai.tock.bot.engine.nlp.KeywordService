@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-ai.tock.xray.keyword.XrayKeyword
+ai.tock.bot.xray.XrayKeyword
