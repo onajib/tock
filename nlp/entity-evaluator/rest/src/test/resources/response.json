@@ -1,0 +1,24 @@
+{
+  "entities": [
+    {
+      "entity": {
+        "start": 12,
+        "end": 14,
+        "type": {
+          "name": "flair:first_name"
+        }
+      },
+      "probability": 0.78
+    },
+    {
+      "entity": {
+        "start": 16,
+        "end": 22,
+        "type": {
+          "name": "flair:last_name"
+        }
+      },
+      "probability": 0.67
+    }
+  ]
+}
