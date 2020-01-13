@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package keyword
+package ai.tock.bot.xray.keyword
 
 import ai.tock.bot.engine.nlp.BuiltInKeywordListener
 import ai.tock.bot.engine.nlp.KeywordService
 import ai.tock.shared.property
 import java.util.concurrent.ConcurrentSkipListSet
 
-class XrayKeyword() : KeywordService {
+class XrayKeyword : KeywordService {
     val XRAY_KEYWORD = property("tock_bot_xray_creation_keyword", "_xray_")
     val XRAY_UPDATE_KEYWORD = property("tock_bot_xray_update_keyword", "_xray_update_")
 

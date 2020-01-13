@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package engine.nlp
+package ai.tock.bot.xray
 
 import ai.tock.bot.definition.Intent
 import ai.tock.bot.engine.nlp.BuiltInKeywordListener
 import ai.tock.shared.TOCK_NAMESPACE
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import kotlin.test.assertTrue
 
-class BuiltInKeywordListenerTest {
+
+class XrayTests {
+
+    @Test
+    fun test() {
+        assertTrue(true)
+    }
 
     @Test
     fun `GIVEN a keyword WHEN this keywords equals test THEN keyword is recognized and the Intent keyword is returned`() {

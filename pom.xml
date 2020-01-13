@@ -94,7 +94,6 @@
     </properties>
 
     <modules>
-        <module>xray</module>
         <module>shared</module>
         <module>stt</module>
         <module>translator</module>

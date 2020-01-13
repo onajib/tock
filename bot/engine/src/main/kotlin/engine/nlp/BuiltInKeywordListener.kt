@@ -18,13 +18,13 @@ package ai.tock.bot.engine.nlp
 
 import ai.tock.bot.definition.Intent
 import ai.tock.shared.property
+import java.lang.reflect.Array.set
 import java.util.concurrent.ConcurrentSkipListSet
 
 /**
  * Built-in listener to start [BotDefinition.keywordStory].
  */
 object BuiltInKeywordListener : NlpListener {
-
     val deleteKeyword = property("tock_bot_delete_keyword", "_delete_user_")
     val enableKeyword = property("tock_bot_enable_keyword", "_enable_user_")
     val disableKeyword = property("tock_bot_disable_keyword", "_disable_user_")

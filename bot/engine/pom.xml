@@ -46,11 +46,6 @@
             <artifactId>tock-stt-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>ai.tock</groupId>
-            <artifactId>tock-xray</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
         </dependency>

@@ -26,7 +26,7 @@
 
     <artifactId>tock-xray</artifactId>
     <packaging>pom</packaging>
-    <name>Tock Xrayr</name>
+    <name>Tock Xray</name>
     <description>...</description>
 
     <dependencies>
