@@ -19,8 +19,11 @@ package ai.tock.bot.xray
 import ai.tock.bot.definition.Intent
 import ai.tock.bot.engine.nlp.BuiltInKeywordListener
 import ai.tock.shared.TOCK_NAMESPACE
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 
 class XrayKeywordTest {
@@ -33,43 +36,9 @@ class XrayKeywordTest {
         assertTrue(resultingIntent == null)
     }
 
-    @Test
-    fun `GIVEN a keyword WHEN this keywords equals -test- THEN keyword is recognized and the Intent keyword is returned`() {
-        val keyword = "_test_"
-
-        val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
-        assertTrue {
-            resultingIntent is Intent
-            resultingIntent?.name == "$TOCK_NAMESPACE:keyword"
-        }
-    }
-
-    @Test
-    fun `GIVEN a keyword WHEN this keywords equals -end test- THEN keyword is recognized and the Intent keyword is returned`() {
-        val keyword = "_end_test_"
-
-        val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
-        assertTrue {
-            resultingIntent is Intent
-            resultingIntent?.name == "$TOCK_NAMESPACE:keyword"
-        }
-    }
-
-    @Test
-    fun `GIVEN a keyword WHEN this keywords equals -xray- THEN keyword is recognized and the Intent keyword is returned`() {
-        val keyword = "_xray_"
-
-        val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
-        assertTrue {
-            resultingIntent is Intent
-            resultingIntent?.name == "$TOCK_NAMESPACE:keyword"
-        }
-    }
-
-    @Test
-    fun `GIVEN a keyword WHEN this keywords equals -xray update- THEN keyword is recognized and the Intent keyword is returned`() {
-        val keyword = "_xray_update_"
-
+    @ParameterizedTest
+    @ValueSource(strings = ["_test_", "_end_test_", "_xray_", "_xray_update"])
+    fun `GIVEN a keyword WHEN this keywords is known by Tock THEN keyword is recognized and the Intent -keyword- is returned`(keyword: String) {
         val resultingIntent = BuiltInKeywordListener.handleKeyword(keyword)
         assertTrue {
             resultingIntent is Intent
