@@ -22,15 +22,15 @@ import ai.tock.bot.engine.BotBus
 import ai.tock.bot.xray.XrayKeywords.XRAY_KEYWORD
 import ai.tock.bot.xray.XrayKeywords.XRAY_UPDATE_KEYWORD
 import ai.tock.shared.error
-import com.github.salomonbrys.kodein.KodeinInjector
-import com.github.salomonbrys.kodein.instance
+import ai.tock.shared.injector
+import ai.tock.shared.provide
 import mu.KotlinLogging
 
-object XrayKeywordHandler {
-    private val logger = KotlinLogging.logger {}
-    private val dialogReportDAO: DialogReportDAO by KodeinInjector().instance()
+class XrayKeywordHandler {
+    val logger = KotlinLogging.logger {}
+    val dialogReportDAO: DialogReportDAO = injector.provide()
 
-    private fun BotBus.createXRay(keyword: String) {
+    internal fun createXray(keyword: String, bus: BotBus) {
         val params = keyword.replace(XRAY_KEYWORD, "").split(",")
         val labelPlanMap = mapOf(
                 "Stories_Complexes" to "JARVISFT-864",
@@ -40,7 +40,7 @@ object XrayKeywordHandler {
         )
         val xray =
                 try {
-                    val dialog = dialogReportDAO.getDialog(dialog.id)!!
+                    val dialog = dialogReportDAO.getDialog(bus.dialog.id)!!
                     val linkedJira = params.getOrNull(1)?.trim()
                     val connectorType = dialog.actions.mapNotNull { it.connectorType }.lastOrNull()
                     val connectorName = ""
@@ -78,33 +78,39 @@ object XrayKeywordHandler {
                             //            else -> null
                             //        }
                             //),
-                            emptyList(),
+                            listOfNotNull(""),
                             labelPlanMap
                     )
                 } catch (e: Exception) {
                     logger.error(e)
                     null
                 }
-        BotDefinitionBase.endTestContextKeywordHandler(this, false)
-        nextUserActionState = null
-        //endRawText(if (xray == null) "Error during xray creation" else "New Jira XRay: ${if (targetConnectorType == gaConnectorType) "" else "https://jira.vsct.fr/projects/JARVISFT/issues/"}${xray.key}")
-        endRawText("Création")
+        BotDefinitionBase.endTestContextKeywordHandler(bus, false)
+        bus.nextUserActionState = null
+        if(xray != null) {
+            bus.endRawText("Xray issue created : ${xray.key}")
+        } else {
+            bus.endRawText("Error during issue creation")
+        }
     }
 
-    private fun BotBus.updateXray(keyword: String) {
+    internal fun updateXray(keyword: String, bus: BotBus) {
         val params = keyword.replace(XRAY_UPDATE_KEYWORD, "")
         val testKey = params.trim()
         val xray =
                 try {
-                    val dialog = dialogReportDAO.getDialog(dialog.id)!!
+                    val dialog = dialogReportDAO.getDialog(bus.dialog.id)!!
                     XrayService().updateXrayTest(dialog, testKey)
                 } catch (e: Exception) {
                     logger.error(e)
                     null
                 }
-        BotDefinitionBase.endTestContextKeywordHandler(this, false)
-        nextUserActionState = null
-        //endRawText(if (xray == null) "Error during xray update" else "Jira XRay: ${if (targetConnectorType == gaConnectorType) "" else "https://jira.vsct.fr/projects/JARVISFT/issues/"}$testKey")
-        endRawText("Mise à jour")
+        BotDefinitionBase.endTestContextKeywordHandler(bus, false)
+        bus.nextUserActionState = null
+        if(xray != null) {
+            bus.endRawText("Xray issue updated : $testKey")
+        } else {
+            bus.endRawText("Error during update of issue $testKey")
+        }
     }
 }

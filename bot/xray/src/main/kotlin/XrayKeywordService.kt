@@ -28,7 +28,7 @@ object XrayKeywords {
     val XRAY_UPDATE_KEYWORD = property("tock_bot_xray_update_keyword", "_xray_update_")
 }
 
-class XrayKeyword : KeywordService {
+class XrayKeywordService : KeywordService {
     override fun detectKeywordIntent(sentence: String): Intent? {
         return if (sentence.startsWith(XRAY_KEYWORD) || sentence.startsWith(XRAY_UPDATE_KEYWORD)) {
             Intent.keyword
@@ -41,14 +41,12 @@ class XrayKeyword : KeywordService {
         when {
             keyword.contains(XRAY_UPDATE_KEYWORD) -> {
                 return {
-                    println("----- UPDATE")
-                    it.end("mise à jour de Xray demandée")
+                    XrayKeywordHandler().updateXray(keyword, it)
                 }
             }
             keyword.contains(XRAY_KEYWORD) -> {
                 return {
-                    println("----- CREATE")
-                    it.end("création de xray demandée")
+                    XrayKeywordHandler().createXray(keyword, it)
                 }
             }
             else -> {
