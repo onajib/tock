@@ -16,9 +16,14 @@
 
 package ai.tock.bot.xray
 
+import ai.tock.bot.admin.dialog.ActionReport
+import ai.tock.bot.admin.dialog.DialogReport
 import ai.tock.bot.admin.dialog.DialogReportDAO
+import ai.tock.bot.connector.rest.client.model.ClientSentence
 import ai.tock.bot.definition.BotDefinitionBase
 import ai.tock.bot.engine.BotBus
+import ai.tock.bot.engine.message.Message
+import ai.tock.bot.engine.message.Sentence
 import ai.tock.bot.xray.XrayKeywords.XRAY_KEYWORD
 import ai.tock.bot.xray.XrayKeywords.XRAY_UPDATE_KEYWORD
 import ai.tock.shared.error
@@ -40,7 +45,7 @@ class XrayKeywordHandler {
         )
         val xray =
                 try {
-                    val dialog = dialogReportDAO.getDialog(bus.dialog.id)!!
+                    val dialog = dialogReportDAO.getDialog(bus.dialog.id)!!.cleanSurrogates()
                     val linkedJira = params.getOrNull(1)?.trim()
                     val connectorType = dialog.actions.mapNotNull { it.connectorType }.lastOrNull()
                     val connectorName = ""
@@ -87,7 +92,7 @@ class XrayKeywordHandler {
                 }
         BotDefinitionBase.endTestContextKeywordHandler(bus, false)
         bus.nextUserActionState = null
-        if(xray != null) {
+        if (xray != null) {
             bus.endRawText("Xray issue created : ${xray.key}")
         } else {
             bus.endRawText("Error during issue creation")
@@ -99,7 +104,7 @@ class XrayKeywordHandler {
         val testKey = params.trim()
         val xray =
                 try {
-                    val dialog = dialogReportDAO.getDialog(bus.dialog.id)!!
+                    val dialog = dialogReportDAO.getDialog(bus.dialog.id)!!.cleanSurrogates()
                     XrayService().updateXrayTest(dialog, testKey)
                 } catch (e: Exception) {
                     logger.error(e)
@@ -107,10 +112,27 @@ class XrayKeywordHandler {
                 }
         BotDefinitionBase.endTestContextKeywordHandler(bus, false)
         bus.nextUserActionState = null
-        if(xray != null) {
+        if (xray != null) {
             bus.endRawText("Xray issue updated : $testKey")
         } else {
             bus.endRawText("Error during update of issue $testKey")
         }
+    }
+
+    private fun DialogReport.cleanSurrogates(): DialogReport {
+        var cleanedActions: MutableList<ActionReport> = mutableListOf()
+
+        this.actions.forEachIndexed {index, currentAction ->
+            var currentActionMessage = currentAction.message.toPrettyString()
+            if(currentAction.message.isSimpleMessage()) {
+                currentActionMessage.forEach { c ->
+                    if (c.isSurrogate()) {
+                        currentActionMessage = currentActionMessage.replace("$c", "")
+                    }
+                }
+                cleanedActions.add(currentAction.copy(message = Sentence(currentActionMessage)))
+            }
+        }
+        return DialogReport(cleanedActions, this.userInterface, this.id)
     }
 }
