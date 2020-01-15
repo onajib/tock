@@ -26,12 +26,33 @@ class XrayKeyword : KeywordService {
     val XRAY_UPDATE_KEYWORD = property("tock_bot_xray_update_keyword", "_xray_update_")
 
     override fun detectKeywordIntent(sentence: String): Intent? {
-        return if(sentence.startsWith(XRAY_KEYWORD) || sentence.startsWith(XRAY_UPDATE_KEYWORD)) {
+        return if (sentence.startsWith(XRAY_KEYWORD) || sentence.startsWith(XRAY_UPDATE_KEYWORD)) {
             Intent.keyword
         } else {
             null
         }
     }
 
-    override fun keywordHandler(keyword: String): ((bus: BotBus) -> Unit)? = null
+    override fun keywordHandler(keyword: String): ((bus: BotBus) -> Unit)? {
+        println("----- KEYWORD $keyword")
+
+        when {
+            keyword.contains(XRAY_UPDATE_KEYWORD) -> {
+                return {
+                    println("----- UPDATE")
+                    it.end("mise à jour de Xray demandée")
+                }
+            }
+            keyword.contains(XRAY_KEYWORD) -> {
+                return {
+                    println("----- CREATE")
+                    it.end("création de xray demandée")
+                }
+            }
+            else -> {
+                return null
+            }
+        }
+
+    }
 }
