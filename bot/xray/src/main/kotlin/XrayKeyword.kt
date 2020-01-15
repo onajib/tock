@@ -19,12 +19,16 @@ package ai.tock.bot.xray
 import ai.tock.bot.definition.Intent
 import ai.tock.bot.engine.BotBus
 import ai.tock.bot.engine.nlp.KeywordService
+import ai.tock.bot.xray.XrayKeywords.XRAY_KEYWORD
+import ai.tock.bot.xray.XrayKeywords.XRAY_UPDATE_KEYWORD
 import ai.tock.shared.property
 
-class XrayKeyword : KeywordService {
+object XrayKeywords {
     val XRAY_KEYWORD = property("tock_bot_xray_creation_keyword", "_xray_")
     val XRAY_UPDATE_KEYWORD = property("tock_bot_xray_update_keyword", "_xray_update_")
+}
 
+class XrayKeyword : KeywordService {
     override fun detectKeywordIntent(sentence: String): Intent? {
         return if (sentence.startsWith(XRAY_KEYWORD) || sentence.startsWith(XRAY_UPDATE_KEYWORD)) {
             Intent.keyword
@@ -34,8 +38,6 @@ class XrayKeyword : KeywordService {
     }
 
     override fun keywordHandler(keyword: String): ((bus: BotBus) -> Unit)? {
-        println("----- KEYWORD $keyword")
-
         when {
             keyword.contains(XRAY_UPDATE_KEYWORD) -> {
                 return {

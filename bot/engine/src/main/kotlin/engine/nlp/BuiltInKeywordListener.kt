@@ -18,7 +18,6 @@ package ai.tock.bot.engine.nlp
 
 import ai.tock.bot.definition.Intent
 import ai.tock.shared.property
-import java.lang.reflect.Array.set
 import java.util.concurrent.ConcurrentSkipListSet
 
 /**
