@@ -28,12 +28,14 @@ import ai.tock.bot.xray.XrayKeywords.XRAY_KEYWORD
 import ai.tock.bot.xray.XrayKeywords.XRAY_UPDATE_KEYWORD
 import ai.tock.shared.error
 import ai.tock.shared.injector
+import ai.tock.shared.property
 import ai.tock.shared.provide
 import mu.KotlinLogging
 
 class XrayKeywordHandler {
     val logger = KotlinLogging.logger {}
     val dialogReportDAO: DialogReportDAO = injector.provide()
+    val jiraKeyProject = property("tock_bot_test_jira_project", "Set a key for the jira project.")
 
     internal fun createXray(keyword: String, bus: BotBus) {
         val params = keyword.replace(XRAY_KEYWORD, "").split(",")
@@ -60,7 +62,7 @@ class XrayKeywordHandler {
                     val testTitle = { labels: List<String> ->
                         val l = labels.filter { labelPlanMap.containsKey(it) }
                         val labelLink = if (l.isEmpty()) "" else "[${l.first()}]"
-                        "${linkedJira?.replace("JARVISFT-", "")} – [AUTO]$connectorName$labelLink " +
+                        "${linkedJira?.replace("$jiraKeyProject-", "")} – [AUTO]$connectorName$labelLink " +
                                 (params.getOrNull(0)?.run {
                                     if (isBlank()) {
                                         null
