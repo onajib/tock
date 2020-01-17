@@ -21,9 +21,9 @@ import ai.tock.bot.admin.test.DialogExecutionReport
 import ai.tock.bot.admin.test.TestActionReport
 import ai.tock.bot.admin.test.TestDialogReport
 import ai.tock.bot.admin.test.TestPlan
+import ai.tock.bot.admin.test.TestPlanDAO
 import ai.tock.bot.admin.test.TestPlanExecution
 import ai.tock.bot.admin.test.TestPlanExecutionStatus
-import ai.tock.bot.admin.test.TestPlanService.saveTestPlanExecution
 import ai.tock.bot.admin.test.findTestClient
 import ai.tock.bot.xray.XrayClient.getProjectFromIssue
 import ai.tock.bot.xray.XrayClient.getProjectTestPlans
@@ -54,10 +54,13 @@ import ai.tock.shared.Dice
 import ai.tock.shared.defaultLocale
 import ai.tock.shared.defaultZoneId
 import ai.tock.shared.error
+import ai.tock.shared.injector
 import ai.tock.shared.listProperty
 import ai.tock.shared.mapListProperty
 import ai.tock.shared.property
+import ai.tock.shared.provide
 import ai.tock.translator.UserInterfaceType
+import com.github.salomonbrys.kodein.instance
 import mu.KotlinLogging
 import org.litote.kmongo.Id
 import org.litote.kmongo.toId
@@ -382,6 +385,11 @@ class XrayService(
                         logger.info { "Plan $xrayPlanKey executed" }
                     }
                 }
+    }
+
+    private fun saveTestPlanExecution(testPlanExecution: TestPlanExecution) {
+        val testPlanDAO: TestPlanDAO = injector.provide()
+        testPlanDAO.saveTestExecution(testPlanExecution)
     }
 
     private fun execTestsOnly(

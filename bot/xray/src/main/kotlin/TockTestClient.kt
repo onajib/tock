@@ -20,6 +20,7 @@ import ai.tock.bot.admin.bot.BotApplicationConfiguration
 import ai.tock.bot.admin.test.TestClientService
 import ai.tock.bot.admin.test.TestPlan
 import ai.tock.bot.admin.test.TestPlanExecution
+import ai.tock.bot.admin.test.xray.TockTestApi
 import ai.tock.shared.addJacksonConverter
 import ai.tock.shared.basicAuthInterceptor
 import ai.tock.shared.create
