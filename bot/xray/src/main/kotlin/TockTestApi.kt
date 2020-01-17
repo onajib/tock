@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ai.tock.bot.admin.test.xray
+package ai.tock.bot.xray
 
 import ai.tock.bot.admin.bot.BotApplicationConfiguration
 import ai.tock.bot.admin.test.TestPlan

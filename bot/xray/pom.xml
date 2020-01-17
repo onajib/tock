@@ -34,10 +34,6 @@
             <artifactId>tock-bot-engine</artifactId>
         </dependency>
         <dependency>
-            <groupId>ai.tock</groupId>
-            <artifactId>tock-bot-admin-test-xray</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.beust</groupId>
             <artifactId>klaxon</artifactId>
         </dependency>
